@@ -1,6 +1,2 @@
-/*.txt
-/*.exe
-/*/*.txt
-/*/*.exe
-/*/*/*.exe
-/*/*/*.txt
+*.exe
+*.txt
