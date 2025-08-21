@@ -76,9 +76,6 @@ void Schedule(Process *p, int n, double& average_turn_around_time, double& avera
             }
         }
     }
-   
-    
-
     cout<<total_turn_around_time<<endl;
     cout<<total_waiting_time<<endl;
     average_turn_around_time=total_turn_around_time/n;

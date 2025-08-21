@@ -78,9 +78,7 @@ void Schedule(Process *p, int n, double& average_turn_around_time, double& avera
     average_waiting_time=total_waiting_time/n;
 }
 
-void DrawGanttChart(const vector<string>& process_names) {
-    
-}
+
 
 int main(){
 
