@@ -1,0 +1,15 @@
+select Empno, Empname,deptno, dname from Employee natural join dept;
+select Empname,dname,location from Employee natural join dept;
+select Empname,dname from Employee natural join dept where job='CLERK';
+select e1.Empname as Empname, e1.job as Job, e2.Empname as Manager, e2.job as MgrJob from Employee e1, Employee e2 where e1.managerno=e2.empno;
+select Empname from Employee natural join dept where dname='SALES' or dname='RESEARCH';
+select Empname,salary from Employee natural join dept where location='BANGALORE';
+select Empname,commision from Employee natural join dept where dname='admin' and gender='F';
+select Empname from Project inner join emp_workson_project on Project.proj_num=emp_workson_project.pno inner join Employee on emp_workson_project.eno=Employee.empno where pname='Cloud Computing';
+select Pname from Project inner join dept on Project.dnum=dept.deptno where dname='admin';
+select Empname from Project inner join emp_workson_project on Project.proj_num=emp_workson_project.pno inner join Employee on emp_workson_project.eno=Employee.empno where pname='DBMS' and hours_per_week>20;
+select Empname from Employee inner join emp_workson_project on Employee.empno=emp_workson_project.eno inner join Project on emp_workson_project.pno=Project.proj_num where Employee.deptno=Project.dnum;
+select Pname from Project inner join dept on Project.dnum=dept.deptno and Project.location=dept.location;
+select e2.Empname as ManagerName,Pname from Employee e1 inner join Employee e2 on e1.managerno=e2.empno inner join emp_workson_project on e2.empno=emp_workson_project.eno inner join Project on emp_workson_project.pno=Project.proj_num;
+select e2.empname, e2.salary from Employee e1 inner join Employee e2 on e1.managerno=e2.empno inner join emp_workson_project on e2.empno=emp_workson_project.eno inner join Project on emp_workson_project.pno=Project.proj_num where hours_per_week>15 and Pname='Computerization';
+select Empname from Employee inner join emp_workson_project on Employee.empno=emp_workson_project.eno inner join Project on emp_workson_project.pno=Project.proj_num where Project.location='MUMBAI';

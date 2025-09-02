@@ -1,6 +1,7 @@
 # include<iostream>
 #include<string>
 #include<algorithm>
+#include<iomanip>
 using namespace std;
 
 
@@ -11,6 +12,7 @@ class Process{
     double turn_around_time;
     double waiting_time;
     double remaining_time;
+    double completion_time;
     public:
 
     Process(){
@@ -27,6 +29,16 @@ class Process{
         burst_time=_burst_time;
         remaining_time=burst_time;
     }
+
+     void display(){
+        cout<<setw(7)<<name;
+        cout<<setw(10)<<arrival_time;
+        cout<<setw(10)<<burst_time;
+        cout<<setw(12)<<turn_around_time;
+        cout<<setw(10)<<waiting_time;
+        cout<<endl;
+    }
+
     friend void Schedule(Process *p, int n, double&,double&);
     friend int selectProcess(Process*,int,double);
 };
@@ -50,7 +62,7 @@ void Schedule(Process *p, int n, double& average_turn_around_time, double& avera
         return a.arrival_time < b.arrival_time;
     });
 
-    double currtime=0;
+    double currtime=p[0].arrival_time;
     double completion_time=0;
     double total_turn_around_time=0;
     double total_waiting_time=0;
@@ -62,13 +74,17 @@ void Schedule(Process *p, int n, double& average_turn_around_time, double& avera
     }
     
 
+    cout<<"\nGantt Chart:\n";
+    cout<<"  ";
     for(int i=0;i<reqd_time;i++){
         int index=selectProcess(p,n,currtime);
         if(index!=-1){
             currtime++;
+            cout<<setw(3)<<p[index].name<<"  ";
             p[index].remaining_time--;
             if(p[index].remaining_time==0){
                 completion_time=currtime;
+                p[index].completion_time=completion_time;
                 p[index].turn_around_time=completion_time-p[index].arrival_time;
                 p[index].waiting_time=p[index].turn_around_time-p[index].burst_time;
                 total_turn_around_time+=p[index].turn_around_time;
@@ -76,8 +92,13 @@ void Schedule(Process *p, int n, double& average_turn_around_time, double& avera
             }
         }
     }
-    cout<<total_turn_around_time<<endl;
-    cout<<total_waiting_time<<endl;
+    cout<<"\n";
+    for (int i = p[0].arrival_time; i <=reqd_time + p[0].arrival_time; i++)
+    {
+        cout<<setw(2)<<i<<"   ";
+    }
+    cout<<endl;
+
     average_turn_around_time=total_turn_around_time/n;
     average_waiting_time=total_waiting_time/n;
 }
@@ -106,9 +127,17 @@ for(int i = 0; i < n; i++) {
 double avg_tat, avg_wt;
 Schedule(p, n, avg_tat, avg_wt);
 
-cout << "\nResults:\n";
-cout << "Average Turn Around Time: " << avg_tat << endl;
-cout << "Average Waiting Time: " << avg_wt << endl;
+cout<<"----------------------------------------------------\n";
+cout<<setw(10)<<"Process"<<setw(10)<<"Arrival"<<setw(10)<<"Burst"<<setw(10)<<"TAT"<<setw(10)<<"WT\n";
+cout<<"----------------------------------------------------\n";
+for (int i = 0; i < n; i++)
+{
+    p[i].display();
+}
+cout<<"----------------------------------------------------\n";
+
+cout << "ATAT: " << avg_tat << endl;
+cout << "AWT : " << avg_wt << endl<<endl;
 
 delete[] p;
 return 0;
