@@ -86,7 +86,6 @@ void Schedule(Process *p, int n, double& average_turn_around_time, double& avera
            total_turn_around_time += curr.turn_around_time;
            total_waiting_time += curr.waiting_time;
            curr.done=true;
-           // Find and mark the original process as done
            for(int j=0; j<n; j++){
                if(p[j].name == curr.name){
                    p[j].done = true;
