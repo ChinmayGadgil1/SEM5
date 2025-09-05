@@ -51,7 +51,7 @@ class Process {
 
 int selectProcess(Process *p, int n, double current_time) {
     int idx = -1;
-    int best_priority = INT_MAX; // smaller is better
+    int best_priority = INT_MAX;
     for (int i = 0; i < n; i++) {
         if (!p[i].done && p[i].arrival_time <= current_time) {
             if (p[i].priority < best_priority) {
