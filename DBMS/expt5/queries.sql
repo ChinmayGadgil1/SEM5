@@ -1,0 +1,11 @@
+select count(empno) from Employee;
+select count(distinct job) as no_of_jobs from Employee;
+select sum(salary) from Employee;   
+select min(salary), max(salary) from Employee;
+select avg(salary) from Employee where job='salesperson';
+select count(empno) from Employee where job='clerk';
+select count(empno),min(salary) from Employee natural join dept where dname='admin';
+select min(hiredate),max(hiredate) from Employee;
+select count(empno) from Employee where commision>salary;
+select count(empno) from Employee inner join emp_workson_project on Employee.empno=emp_workson_project.eno inner join Project on emp_workson_project.pno=Project.proj_num where pname='research' and hours_per_week>10;
+select count(proj_num) from Project inner join dept on Project.dnum=dept.deptno where dname='admin';
