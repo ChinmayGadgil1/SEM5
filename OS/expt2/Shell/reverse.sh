@@ -7,10 +7,10 @@ original=$n
 
 while [ $n -gt 0 ]
 do
-    dig=$(( n % 10 ))
-    sum=$(( sum + dig ))
-    rev=$(( rev * 10 + dig ))
-    n=$(( n / 10 ))
+    dig=$(( $n % 10 ))
+    sum=$(( $sum + $dig ))
+    rev=$(( $rev * 10 + $dig ))
+    n=$(( $n / 10 ))
 done
 
 echo "Reverse of $original is $rev"

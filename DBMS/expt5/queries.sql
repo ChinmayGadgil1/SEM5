@@ -9,12 +9,6 @@ select min(hiredate),max(hiredate) from Employee;
 select count(empno) from Employee where commision>salary;
 select count(empno) from Employee inner join emp_workson_project on Employee.empno=emp_workson_project.eno inner join Project on emp_workson_project.pno=Project.proj_num where pname='research' and hours_per_week>10;
 select count(proj_num) from Project inner join dept on Project.dnum=dept.deptno where dname='admin';
-
-
-
-
-
-#
 select count(distinct e2.empno) as F_mgr_count,avg(e2.salary) as avg_sal from Employee e1 inner join Employee e2 on e1.managerno=e2.empno where e2.gender='F';
 select count(proj_num) from Project inner join dept on Project.dnum=dept.deptno where dname='admin';
 select sum(hours_per_week) as total_spent from Project join emp_workson_project on Project.proj_num=emp_workson_project.pno where pname='Computerization';
