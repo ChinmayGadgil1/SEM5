@@ -6,7 +6,8 @@
 #include <vector>
 using namespace std;
 
-class Process {
+class Process
+{
 public:
     string name;
     double arrival_time;
@@ -16,7 +17,8 @@ public:
     double completion_time;
     double remaining_time;
 
-    Process() {
+    Process()
+    {
         name = "";
         arrival_time = 0.0;
         burst_time = 0.0;
@@ -26,7 +28,8 @@ public:
         remaining_time = 0.0;
     }
 
-    Process(string _name, double _burst_time, double _arrival_time = 0) {
+    Process(string _name, double _burst_time, double _arrival_time = 0)
+    {
         name = _name;
         arrival_time = _arrival_time;
         burst_time = _burst_time;
@@ -36,7 +39,8 @@ public:
         remaining_time = burst_time;
     }
 
-    void display() const {
+    void display() const
+    {
         cout << setw(7) << name;
         cout << setw(10) << arrival_time;
         cout << setw(10) << burst_time;
@@ -46,9 +50,12 @@ public:
     }
 };
 
-void addToReady(Process *p, int n, double currtime, queue<int> &q, vector<bool> &arrived) {
-    for (int i = 0; i < n; i++) {
-        if (!arrived[i] && p[i].arrival_time <= currtime && p[i].remaining_time > 0) {
+void addToReady(Process *p, int n, double currtime, queue<int> &q, vector<bool> &arrived)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (!arrived[i] && p[i].arrival_time <= currtime && p[i].remaining_time > 0)
+        {
             q.push(i);
             arrived[i] = true;
         }
@@ -57,7 +64,8 @@ void addToReady(Process *p, int n, double currtime, queue<int> &q, vector<bool> 
 
 void Schedule(Process *p, int n, double &average_turn_around_time,
               double &average_waiting_time, int time_quantum,
-              vector<pair<string, pair<double, double>>> &gantt) {
+              vector<pair<string, pair<double, double>>> &gantt)
+{
 
     queue<int> readyQueue;
     vector<bool> arrived(n, false);
@@ -65,16 +73,16 @@ void Schedule(Process *p, int n, double &average_turn_around_time,
     int completed = 0;
     double total_turn_around_time = 0.0, total_waiting_time = 0.0;
 
-    // Sort by arrival
-    sort(p, p + n, [](const Process &a, const Process &b) {
-        return a.arrival_time < b.arrival_time;
-    });
+    sort(p, p + n, [](const Process &a, const Process &b)
+         { return a.arrival_time < b.arrival_time; });
 
     currtime = p[0].arrival_time;
     addToReady(p, n, currtime, readyQueue, arrived);
 
-    while (completed < n) {
-        if (readyQueue.empty()) {
+    while (completed < n)
+    {
+        if (readyQueue.empty())
+        {
             double next_arrival = 1e9;
             for (int i = 0; i < n; i++)
                 if (p[i].remaining_time > 0 && p[i].arrival_time > currtime)
@@ -97,7 +105,8 @@ void Schedule(Process *p, int n, double &average_turn_around_time,
 
         if (p[idx].remaining_time > 0)
             readyQueue.push(idx);
-        else {
+        else
+        {
             p[idx].completion_time = currtime;
             p[idx].turn_around_time = p[idx].completion_time - p[idx].arrival_time;
             p[idx].waiting_time = p[idx].turn_around_time - p[idx].burst_time;
@@ -105,13 +114,14 @@ void Schedule(Process *p, int n, double &average_turn_around_time,
             total_waiting_time += p[idx].waiting_time;
             completed++;
         }
-
-        // Display current ready queue (made more compact)
         cout << "RQ: ";
-        if (readyQueue.empty()) cout << "Empty";
-        else {
+        if (readyQueue.empty())
+            cout << "Empty";
+        else
+        {
             queue<int> temp = readyQueue;
-            while (!temp.empty()) {
+            while (!temp.empty())
+            {
                 cout << p[temp.front()].name << " ";
                 temp.pop();
             }
@@ -123,7 +133,8 @@ void Schedule(Process *p, int n, double &average_turn_around_time,
     average_waiting_time = total_waiting_time / n;
 }
 
-int main() {
+int main()
+{
     int n, time_quantum;
     cout << "Enter number of processes: ";
     cin >> n;
@@ -131,7 +142,8 @@ int main() {
     cin >> time_quantum;
 
     Process *p = new Process[n];
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         string name;
         double burst, arrival;
         cout << "\nProcess " << i + 1 << ":\n";

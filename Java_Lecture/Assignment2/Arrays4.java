@@ -7,7 +7,7 @@ public class Arrays4 {
         return newList;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         int[] arr = {1, 2, 3};
         int[] doubled = doubleCapacity(arr);
         System.out.println(Arrays.toString(arr));
