@@ -112,7 +112,7 @@ for(int i=0; i<m; i++)
     {    	cout<<setiosflags(ios::right)<<" ";
 			for(int j=0;j<m;j++)
 			cout<<allocation[i][j]<<" ";
-			cout<<setw(6);
+			cout<<setw(11);
 			for(int j=0;j<m;j++)
 			{	if(k==1)
 				{	cout<<"  ";	continue;	}
@@ -120,7 +120,7 @@ for(int i=0; i<m; i++)
 					cout<<available[j]<<" ";			}
 			if(k==1)
 				cout<<" ";
-			cout<<setw(8);
+			cout<<setw(9);
 			for(int j=0;j<m;j++)
 			cout<<need[i][j]<<" ";
 			k=1;
