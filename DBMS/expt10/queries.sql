@@ -18,7 +18,6 @@ BEGIN
     GROUP BY dnum;
 END $$
 
-DELIMITER $$
 
 CREATE PROCEDURE update_salary_for_employee(IN empid INT)
 BEGIN
@@ -46,10 +45,6 @@ BEGIN
     SELECT empid AS EmpNo, sal AS Old_Salary, c AS No_of_Projects, new_sal AS New_Salary;
 END $$
 
-DELIMITER ;
-
-
-DELIMITER $$
 
 CREATE PROCEDURE update_salary_for_all()
 BEGIN
@@ -74,5 +69,3 @@ END $$
 
 DELIMITER ;
 
-
-DELIMITER ;
