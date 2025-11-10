@@ -176,7 +176,7 @@ int main() {
             Need[p][i] -= Request[i];
         }
 
-        cout << "\nTemp state:\n";
+        cout << "\nRunning resource request algorithm:\n";
         cout << "\n\tAlloc\tAvail\tNeed\n";
 
         int printedAvailable = 0;
