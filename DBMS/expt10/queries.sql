@@ -18,6 +18,8 @@ BEGIN
     GROUP BY dnum;
 END $$
 
+DELIMITER $$
+
 CREATE PROCEDURE update_salary_for_employee(IN empid INT)
 BEGIN
     DECLARE sal FLOAT;
@@ -37,21 +39,40 @@ BEGIN
         SET new_sal = sal;
     END IF;
 
+    UPDATE employee
+    SET salary = new_sal
+    WHERE Empno = empid;
+
     SELECT empid AS EmpNo, sal AS Old_Salary, c AS No_of_Projects, new_sal AS New_Salary;
 END $$
 
+DELIMITER ;
+
+
+DELIMITER $$
+
 CREATE PROCEDURE update_salary_for_all()
 BEGIN
-    SELECT e.Empno, e.salary AS Old_Salary, COUNT(w.pno) AS No_of_Projects,
-    CASE
-        WHEN e.salary > 50000 AND COUNT(w.pno) > 2 THEN e.salary * 1.05
-        WHEN e.salary >= 50000 AND e.salary <= 60000 AND COUNT(w.pno) > 2 THEN e.salary * 1.02
-        WHEN e.salary > 100000 AND COUNT(w.pno) >= 1 THEN e.salary * 1.01
-        ELSE e.salary
-    END AS New_Salary
-    FROM employee e
-    LEFT JOIN workson w ON e.Empno = w.eno
-    GROUP BY e.Empno;
+    DECLARE done INT DEFAULT 0;
+    DECLARE empid INT;
+
+    DECLARE emp_cursor CURSOR FOR SELECT Empno FROM employee;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN emp_cursor;
+
+    read_loop: LOOP
+        FETCH emp_cursor INTO empid;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        CALL update_salary_for_employee(empid);
+    END LOOP;
+
+    CLOSE emp_cursor;
 END $$
+
+DELIMITER ;
+
 
 DELIMITER ;
