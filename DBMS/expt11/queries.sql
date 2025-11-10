@@ -49,3 +49,35 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+DELIMITER $$
+
+CREATE TRIGGER trg_workson_insert
+AFTER INSERT ON workson
+FOR EACH ROW
+BEGIN
+
+    IF EXISTS (SELECT * FROM emp_proj WHERE empid = NEW.eno) THEN
+        UPDATE emp_proj
+        SET num_projects = num_projects + 1,
+            total_hrs = total_hrs + NEW.hours_per_week
+        WHERE empid = NEW.eno;
+    ELSE
+        INSERT INTO emp_proj(empid, num_projects, total_hrs)
+        VALUES (NEW.eno, 1, NEW.hours_per_week);
+    END IF;
+
+
+    IF EXISTS (SELECT * FROM proj_info WHERE proj_no = NEW.pno) THEN
+        UPDATE proj_info
+        SET num_employees = num_employees + 1,
+            total_hrs = total_hrs + NEW.hours_per_week
+        WHERE proj_no = NEW.pno;
+    ELSE
+        INSERT INTO proj_info(proj_no, num_employees, total_hrs)
+        VALUES (NEW.pno, 1, NEW.hours_per_week);
+    END IF;
+END $$
+
+DELIMITER ;
+
