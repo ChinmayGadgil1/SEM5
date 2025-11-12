@@ -1,5 +1,7 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -39,6 +41,9 @@ public class StudentForm extends JFrame implements ActionListener {
     Connection conn;
     Statement stmt;
     ResultSet rs;
+    
+    // Flag to prevent recursive updates
+    private boolean isUpdating = false;
 
     public StudentForm() {
         super("Student Details Form");
@@ -77,10 +82,43 @@ public class StudentForm extends JFrame implements ActionListener {
         btnSearch = new JButton("Search");
         btnDelete = new JButton("Delete");
 
-        // Table
-        model = new DefaultTableModel(new String[]{"ID", "Name", "Gender", "Course", "Hobbies", "Address"}, 0);
+        // Table - Make it editable except ID column
+        model = new DefaultTableModel(new String[]{"ID", "Name", "Gender", "Course", "Hobbies", "Address"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // ID column (0) is not editable, all others are
+                return column != 0;
+            }
+        };
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
+        
+        // Add TableModelListener to detect changes in the table
+        model.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                // Only handle UPDATE events, not INSERT or DELETE
+                if (e.getType() == TableModelEvent.UPDATE && !isUpdating) {
+                    int row = e.getFirstRow();
+                    int column = e.getColumn();
+                    
+                    // Make sure it's a valid data change
+                    if (row >= 0 && column >= 0) {
+                        updateDatabaseFromTable(row);
+                    }
+                }
+            }
+        });
+        
+        // Add ListSelectionListener to populate form fields when a row is selected
+        table.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    populateFormFromTable(selectedRow);
+                }
+            }
+        });
 
         // Add action listeners
         btnInsert.addActionListener(this);
@@ -157,25 +195,94 @@ public class StudentForm extends JFrame implements ActionListener {
         
         //Initialize the database components
         String userName = "root";
-		String password = "chinmay@mariadb";
-		String url = "jdbc:mysql://localhost:3306/demojdbc";
-		try {
-			Class.forName ("com.mysql.cj.jdbc.Driver");
-			conn = DriverManager.getConnection (url, userName, password);
-			stmt = conn.createStatement();
-			rs = stmt.executeQuery("Select * from Student");
-			while(rs.next()) {
-				
-				model.addRow(new Object[]{	rs.getInt(1), rs.getString(2), 
-											rs.getString(3), rs.getString(4), 
-											rs.getString(5), rs.getString(6)});
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+        String password = "chinmay@mariadb";
+        String url = "jdbc:mysql://localhost:3306/demojdbc";
+        try {
+            Class.forName ("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection (url, userName, password);
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("Select * from Student");
+            while(rs.next()) {
+                
+                model.addRow(new Object[]{	rs.getInt(1), rs.getString(2), 
+                                            rs.getString(3), rs.getString(4), 
+                                            rs.getString(5), rs.getString(6)});
+            }
+            
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+    }
+    
+    /**
+     * Populates form fields from the selected table row
+     */
+    private void populateFormFromTable(int row) {
+        try {
+            txtId.setText(model.getValueAt(row, 0).toString());
+            txtName.setText(model.getValueAt(row, 1).toString());
+            
+            String gender = model.getValueAt(row, 2).toString();
+            if (gender.equalsIgnoreCase("Male")) {
+                rbMale.setSelected(true);
+            } else if (gender.equalsIgnoreCase("Female")) {
+                rbFemale.setSelected(true);
+            } else {
+                bgGender.clearSelection();
+            }
+            
+            cmbCourse.setSelectedItem(model.getValueAt(row, 3).toString());
+            
+            String hobbies = model.getValueAt(row, 4).toString();
+            cbSports.setSelected(hobbies.contains("Sports"));
+            cbMusic.setSelected(hobbies.contains("Music"));
+            cbReading.setSelected(hobbies.contains("Reading"));
+            
+            txtAddress.setText(model.getValueAt(row, 5).toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Updates the database when a table cell is edited
+     */
+    private void updateDatabaseFromTable(int row) {
+        isUpdating = true;
+        try {
+            String id = model.getValueAt(row, 0).toString();
+            String name = model.getValueAt(row, 1).toString();
+            String gender = model.getValueAt(row, 2).toString();
+            String course = model.getValueAt(row, 3).toString();
+            String hobbies = model.getValueAt(row, 4).toString();
+            String address = model.getValueAt(row, 5).toString();
+            
+            String updateQuery = "UPDATE student SET name='" + name + "', gender='" + gender + 
+                               "', course='" + course + "', hobbies='" + hobbies + 
+                               "', address='" + address + "' WHERE id=" + Integer.parseInt(id);
+            
+            Statement updateStmt = conn.createStatement();
+            int k = updateStmt.executeUpdate(updateQuery);
+            
+            if (k > 0) {
+                // Optionally show a subtle notification
+                System.out.println("Row " + (row + 1) + " updated successfully in database");
+            } else {
+                JOptionPane.showMessageDialog(this, "Update failed!");
+            }
+            updateStmt.close();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Invalid ID format!");
+        } finally {
+            isUpdating = false;
+        }
     }
 
     @Override
@@ -201,16 +308,17 @@ public class StudentForm extends JFrame implements ActionListener {
             String insQuery = "insert into student values ("+Integer.parseInt(id)+",'"+name+"','"+gender+"','"+course+"','"+hobbies.toString().trim()+"','"+address+"');";
             try {
                 Statement insertStmt = conn.createStatement();
-				int k = insertStmt.executeUpdate(insQuery);
-				if(k > 0) {
-					model.addRow(new Object[]{id, name, gender, course, hobbies.toString().trim(), address});
-            		JOptionPane.showMessageDialog(this, "Record Inserted!");
-				}
-				insertStmt.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Insert Error: " + e1.getMessage());
-			}
+                int k = insertStmt.executeUpdate(insQuery);
+                if(k > 0) {
+                    model.addRow(new Object[]{id, name, gender, course, hobbies.toString().trim(), address});
+                    JOptionPane.showMessageDialog(this, "Record Inserted!");
+                    clearForm();
+                }
+                insertStmt.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Insert Error: " + e1.getMessage());
+            }
         }
 
         else if (e.getSource() == btnUpdate) {
@@ -232,23 +340,23 @@ public class StudentForm extends JFrame implements ActionListener {
             String updateQuery = "update student set name='"+name+"', gender='"+gender+"', course='"+course+"', hobbies='"+hobbies.toString().trim()+"', address='"+address+"' where id="+Integer.parseInt(selectedId)+";";
             try {
                 Statement updateStmt = conn.createStatement();
-				int k = updateStmt.executeUpdate(updateQuery);
-				if(k > 0) {
-					// Update table model
-		            model.setValueAt(name, row, 1);
-		            model.setValueAt(gender, row, 2);
-		            model.setValueAt(course, row, 3);
-		            model.setValueAt(hobbies.toString().trim(), row, 4);
-		            model.setValueAt(address, row, 5);
-		            JOptionPane.showMessageDialog(this, "Record Updated!");
-				} else {
-					JOptionPane.showMessageDialog(this, "Update failed!");
-				}
-				updateStmt.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Error: " + e1.getMessage());
-			}
+                int k = updateStmt.executeUpdate(updateQuery);
+                if(k > 0) {
+                    // Update table model
+                    model.setValueAt(name, row, 1);
+                    model.setValueAt(gender, row, 2);
+                    model.setValueAt(course, row, 3);
+                    model.setValueAt(hobbies.toString().trim(), row, 4);
+                    model.setValueAt(address, row, 5);
+                    JOptionPane.showMessageDialog(this, "Record Updated!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Update failed!");
+                }
+                updateStmt.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error: " + e1.getMessage());
+            }
         }
 
         else if (e.getSource() == btnSearch) {
@@ -261,30 +369,31 @@ public class StudentForm extends JFrame implements ActionListener {
             // Search in database
             try {
                 Statement searchStmt = conn.createStatement();
-				ResultSet searchRs = searchStmt.executeQuery("select * from student where id="+Integer.parseInt(searchId)+";");
-				if(searchRs.next()) {
-					// Found in database, now find in table and select
-					boolean found = false;
-					for (int i = 0; i < model.getRowCount(); i++) {
-					    if (model.getValueAt(i, 0).toString().equals(searchId)) {
-					        table.setRowSelectionInterval(i, i);
-					        found = true;
-					        break;
-					    }
-					}
-					if (!found)
-					    JOptionPane.showMessageDialog(this, "Record not found in table!");
-					else
-					    JOptionPane.showMessageDialog(this, "Record found!");
-				} else {
-					JOptionPane.showMessageDialog(this, "Record not found!");
-				}
-				searchRs.close();
-				searchStmt.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Search Error: " + e1.getMessage());
-			}
+                ResultSet searchRs = searchStmt.executeQuery("select * from student where id="+Integer.parseInt(searchId)+";");
+                if(searchRs.next()) {
+                    // Found in database, now find in table and select
+                    boolean found = false;
+                    for (int i = 0; i < model.getRowCount(); i++) {
+                        if (model.getValueAt(i, 0).toString().equals(searchId)) {
+                            table.setRowSelectionInterval(i, i);
+                            table.scrollRectToVisible(table.getCellRect(i, 0, true));
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found)
+                        JOptionPane.showMessageDialog(this, "Record not found in table!");
+                    else
+                        JOptionPane.showMessageDialog(this, "Record found!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Record not found!");
+                }
+                searchRs.close();
+                searchStmt.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Search Error: " + e1.getMessage());
+            }
         }
 
         else if (e.getSource() == btnDelete) {
@@ -297,27 +406,53 @@ public class StudentForm extends JFrame implements ActionListener {
             // Get ID from selected row
             String deleteId = model.getValueAt(row, 0).toString();
             
+            // Confirm deletion
+            int confirm = JOptionPane.showConfirmDialog(this, 
+                "Are you sure you want to delete student ID: " + deleteId + "?", 
+                "Confirm Delete", 
+                JOptionPane.YES_NO_OPTION);
+            
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
+            
             // Delete from database
             String deleteQuery = "delete from student where id="+Integer.parseInt(deleteId)+";";
             try {
                 Statement deleteStmt = conn.createStatement();
-				int k = deleteStmt.executeUpdate(deleteQuery);
-				if(k > 0) {
-					// Remove from table
-		            model.removeRow(row);
-		            JOptionPane.showMessageDialog(this, "Record Deleted!");
-				} else {
-					JOptionPane.showMessageDialog(this, "Delete failed!");
-				}
-				deleteStmt.close();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-				JOptionPane.showMessageDialog(this, "Error: " + e1.getMessage());
-			}
+                int k = deleteStmt.executeUpdate(deleteQuery);
+                if(k > 0) {
+                    // Remove from table
+                    model.removeRow(row);
+                    JOptionPane.showMessageDialog(this, "Record Deleted!");
+                    clearForm();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Delete failed!");
+                }
+                deleteStmt.close();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error: " + e1.getMessage());
+            }
         }
     }
     
+    /**
+     * Clears all form fields
+     */
+    private void clearForm() {
+        txtId.setText("");
+        txtName.setText("");
+        txtSearch.setText("");
+        bgGender.clearSelection();
+        cmbCourse.setSelectedIndex(0);
+        cbSports.setSelected(false);
+        cbMusic.setSelected(false);
+        cbReading.setSelected(false);
+        txtAddress.setText("");
+    }
+    
     public static void main(String[] args) {
-        new StudentForm();
+        SwingUtilities.invokeLater(() -> new StudentForm());
     }
 }
