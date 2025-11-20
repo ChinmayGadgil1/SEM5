@@ -44,8 +44,7 @@ public class AppWindow extends Frame {
 	}
 
 	public static void main(String[] args) {
-		AppWindow appframe = new AppWindow();
-
+		new AppWindow();
 	}
 
 }
