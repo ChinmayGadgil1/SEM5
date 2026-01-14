@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript String Methods</title>
+</head>
+<body>
+    <h2>String Methods Demo</h2>
+    <div id="output"></div>
+    
+    <script>
+        var output = "";
+        var text = "Hello World!  Welcome to JavaScript. ";
+        
+        // 1. length
+        output += "<b>1. length:</b> " + text.length + "<br>";
+        
+        // 2. toUpperCase()
+        output += "<b>2. toUpperCase():</b> " + text.toUpperCase() + "<br>";
+        
+        // 3. toLowerCase()
+        output += "<b>3. toLowerCase():</b> " + text. toLowerCase() + "<br>";
+        
+        // 4. charAt()
+        output += "<b>4. charAt(0):</b> " + text.charAt(0) + "<br>";
+        
+        // 5. indexOf()
+        output += "<b>5. indexOf('World'):</b> " + text.indexOf("World") + "<br>";
+        
+        // 6. substring()
+        output += "<b>6. substring(0, 5):</b> " + text.substring(0, 5) + "<br>";
+        
+        // 7. substr()
+        output += "<b>7. substr(6, 5):</b> " + text.substr(6, 5) + "<br>";
+        
+        // 8. replace()
+        output += "<b>8. replace():</b> " + text.replace("World", "PHP") + "<br>";
+        
+        // 9. split()
+        output += "<b>9. split(' '):</b> " + text.split(" ") + "<br>";
+        
+        // 10. trim()
+        var spacedText = "   Hello   ";
+        output += "<b>10. trim():</b> '" + spacedText.trim() + "'<br>";
+        
+        // 11. concat()
+        output += "<b>11. concat():</b> " + "Hello".concat(" ", "World") + "<br>";
+        
+        // 12. search()
+        output += "<b>12. search('Welcome'):</b> " + text.search("Welcome") + "<br>";
+        
+        document.getElementById("output").innerHTML = output;
+    </script>
+</body>
+</html>

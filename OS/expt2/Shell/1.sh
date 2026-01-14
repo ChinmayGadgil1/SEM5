@@ -1,7 +1,22 @@
+#!/bin/bash
 
-echo "Hello World"
+echo "Enter n"
+read n
 
-for i in {1..5}
+if [ $((n % 2)) -eq 0 ]
+then
+  echo "Even"
+else
+  echo "Odd"
+fi
+
+sum=0
+
+while [ $n -gt 0 ]
 do
-  echo "Iteration $i"
+  dig=$(( $n % 10 ))
+  sum=$(( $sum + $dig ))
+  n=$(( $n / 10 ))
 done
+
+echo "Sum is: $sum"

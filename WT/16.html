@@ -1,0 +1,44 @@
+<! DOCTYPE html>
+<html>
+<head>
+    <title>CSS Positioning</title>
+    <style>
+        .container {
+            position: relative;
+            width: 400px;
+            height: 300px;
+            background-color: #f0f0f0;
+            border: 2px solid black;
+        }
+        
+        /* Relative Positioning */
+        .relative-box {
+            position:  relative;
+            top: 20px;
+            left: 30px;
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            color: white;
+            border:2px solid red;
+        }
+        
+        /* Absolute Positioning */
+        .absolute-box {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            color:  white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="relative-box">Relative</div>
+        <div class="absolute-box">Absolute</div>
+    </div>
+</body>
+</html>

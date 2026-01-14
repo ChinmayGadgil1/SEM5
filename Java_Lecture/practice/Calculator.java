@@ -1,14 +1,17 @@
 import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.Action;
 
 public class Calculator extends Frame {
 	Button b[];
 	TextField tf;
 	
 	public Calculator() {
-		// TODO Auto-generated constructor stub
 		b = new Button[16];
 		for(int i=0;i<10;i++)
 			b[i]=new Button(""+i);
+		
 		b[10]=new Button("+");
 		b[11]=new Button("-");
 		b[12]=new Button("*");
@@ -28,11 +31,19 @@ public class Calculator extends Frame {
 		add(tf);
 		add(p);
 		setVisible(true);
+
+		addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                dispose();
+				System.exit(0);
+            }
+        });
 		
 	}
 
+	
+
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		new Calculator();
 
 	}

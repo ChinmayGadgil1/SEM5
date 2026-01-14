@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Stringify and Parse</title>
+</head>
+<body>
+    <h2>JSON Stringify & Parse Demo</h2>
+    <div id="output"></div>
+    
+    <script>
+        var output = "";
+        
+        // JavaScript Object
+        var student = {
+            name: "John Doe",
+            age: 21,
+            course: "Computer Science",
+            grades: [85, 90, 78]
+        };
+        
+        output += "<h3>1. Original Object:</h3>";
+        output += "Type: " + typeof student + "<br>";
+        output += "Name: " + student. name + "<br><br>";
+        
+        // JSON. stringify() - Object to JSON String
+        var jsonString = JSON.stringify(student);
+        output += "<h3>2. After JSON.stringify():</h3>";
+        output += "Type:  " + typeof jsonString + "<br>";
+        output += "Value: " + jsonString + "<br><br>";
+        
+        // Pretty Print with indentation
+        var prettyJson = JSON.stringify(student, null, 4);
+        output += "<h3>3. Pretty Print:</h3>";
+        output += "<pre>" + prettyJson + "</pre><br>";
+        
+        // JSON.parse() - JSON String to Object
+        var parsedObject = JSON.parse(jsonString);
+        output += "<h3>4. After JSON.parse():</h3>";
+        output += "Type: " + typeof parsedObject + "<br>";
+        output += "Name: " + parsedObject.name + "<br>";
+        output += "Age: " + parsedObject. age + "<br>";
+        
+        document.getElementById("output").innerHTML = output;
+    </script>
+</body>
+</html>

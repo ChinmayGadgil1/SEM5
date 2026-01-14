@@ -52,7 +52,7 @@ public class AwtLayoutDemo {
       panel.setBackground(Color.darkGray);
       panel.setSize(300,300);
       BorderLayout layout = new BorderLayout();
-      layout.setHgap(10);
+      layout.setHgap(20);
       layout.setVgap(10);
       panel.setLayout(layout);        
 	  

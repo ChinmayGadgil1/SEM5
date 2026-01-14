@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Student Percentage Calculator</h2>
+
+<!-- Input fields for marks -->
+<label>Mathematics: </label>
+<input type="number" id="math" min="0" max="100"><br><br>
+
+<label>Physics: </label>
+<input type="number" id="physics" min="0" max="100"><br><br>
+
+<label>Chemistry: </label>
+<input type="number" id="chemistry" min="0" max="100"><br><br>
+
+<label>Computer Science: </label>
+<input type="number" id="computer" min="0" max="100"><br><br>
+
+<!-- Button with onclick event -->
+<button onclick="calculatePercentage()">Calculate Percentage</button>
+
+<!-- Display results -->
+<div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+
+<script>
+function calculatePercentage() {
+    // Get values from input fields
+    var math = parseFloat(document.getElementById("math").value);
+    var physics = parseFloat(document.getElementById("physics").value);
+    var chemistry = parseFloat(document.getElementById("chemistry").value);
+    var computer = parseFloat(document.getElementById("computer").value);
+    
+    // Validation
+    if (isNaN(math) || isNaN(physics) || isNaN(chemistry) || isNaN(computer)) {
+        document.getElementById("result").innerHTML = 
+            "<span style='color:red'>Please enter valid marks for all subjects!</span>";
+        return;
+    }
+    
+    if (math < 0 || math > 100 || physics < 0 || physics > 100 || 
+        chemistry < 0 || chemistry > 100 || computer < 0 || computer > 100) {
+        document.getElementById("result").innerHTML = 
+            "<span style='color:red'>Marks must be between 0 and 100!</span>";
+        return;
+    }
+    
+    // Calculate total and percentage
+    var totalMarks = math + physics + chemistry + computer;
+    var percentage = (totalMarks / 400) * 100;
+    
+    // Determine grade
+    var grade;
+    if (percentage >= 90) grade = "A+";
+    else if (percentage >= 80) grade = "A";
+    else if (percentage >= 70) grade = "B+";
+    else if (percentage >= 60) grade = "B";
+    else if (percentage >= 50) grade = "C";
+    else grade = "F";
+    
+    // Display results
+    var resultHTML = "<h3>Result:</h3>";
+    resultHTML += "Mathematics: " + math + "/100<br>";
+    resultHTML += "Physics: " + physics + "/100<br>";
+    resultHTML += "Chemistry: " + chemistry + "/100<br>";
+    resultHTML += "Computer Science: " + computer + "/100<br>";
+    resultHTML += "Total Marks: " + totalMarks + "/400<br>";
+    resultHTML += "Percentage: " + percentage.toFixed(2) + "%<br>";
+    resultHTML += "Grade: " + grade + "<br>";
+    
+    // Color code based on percentage
+    var color = (percentage >= 50) ? "green" : "red";
+    resultHTML = "<div style='color:" + color + "'>" + resultHTML + "</div>";
+    
+    document.getElementById("result").innerHTML = resultHTML;
+}
+
+// Alternative: Using event listener instead of inline onclick
+document.addEventListener("DOMContentLoaded", function() {
+    // Add enter key support
+    var inputs = document.querySelectorAll("input[type='number']");
+    inputs.forEach(function(input) {
+        input.addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                calculatePercentage();
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>

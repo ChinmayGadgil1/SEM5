@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Restaurant Feedback Form</h2>
+<form>
+  <!-- 1. Text input -->
+  <label>Name:</label><br>
+  <input type="text" name="name" required><br><br>
+  
+  <!-- 2. Email input -->
+  <label>Email:</label><br>
+  <input type="email" name="email" required><br><br>
+  
+  <!-- 3. Dropdown/Select -->
+  <label>Meal Type:</label><br>
+  <select name="meal">
+    <option value="breakfast">Breakfast</option>
+    <option value="lunch">Lunch</option>
+    <option value="dinner">Dinner</option>
+  </select><br><br>
+  
+  <!-- 4. Radio buttons -->
+  <label>Rating:</label><br>
+  <input type="radio" name="rating" value="excellent"> Excellent<br>
+  <input type="radio" name="rating" value="good"> Good<br>
+  <input type="radio" name="rating" value="average"> Average<br>
+  <input type="radio" name="rating" value="poor"> Poor<br><br>
+  
+  <!-- 5. Textarea -->
+  <label>Comments:</label><br>
+  <textarea name="comments" rows="4" cols="50"></textarea><br><br>
+  
+  <!-- 6. Checkbox -->
+  <input type="checkbox" name="subscribe"> Subscribe to newsletter<br><br>
+  
+  <!-- Submit button -->
+  <input type="submit" value="Submit Feedback">
+</form>
+</body>
+</html>

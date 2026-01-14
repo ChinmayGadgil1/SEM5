@@ -4,7 +4,7 @@ larg_dig=0
 small_dig=9
 while [ $n -gt 0 ]
 do
-    digit=$((n % 10))
+    digit=$(($n % 10))
     if [ $digit -gt $larg_dig ]
     then
         larg_dig=$digit

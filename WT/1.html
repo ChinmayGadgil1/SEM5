@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JavaScript Events</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 100px;
+            background-color: lightblue;
+            text-align: center;
+            line-height: 100px;
+            margin: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onload="pageLoaded()">
+    <h2>JavaScript Events Demo</h2>
+    
+    <!-- onClick Event -->
+    <button onclick="handleClick()">Click Me</button>
+    
+    <!-- onMouseOver and onMouseOut -->
+    <div class="box" 
+         onmouseover="this.style.backgroundColor='yellow'" 
+         onmouseout="this. style.backgroundColor='lightblue'">
+        Hover Over Me
+    </div>
+    
+    <!-- onMouseDown and onMouseUp -->
+    <div class="box" id="pressBox"
+         onmousedown="changeColor('red')"
+         onmouseup="changeColor('green')">
+        Press and Release
+    </div>
+    
+    <!-- onFocus and onBlur -->
+    <input type="text" id="focusInput"
+           onfocus="this.style.backgroundColor='lightyellow'"
+           onblur="this.style.backgroundColor='white'"
+           placeholder="Click to focus">
+    
+    <!-- onChange -->
+    <select onchange="selectChanged(this.value)">
+        <option value="">Select Color</option>
+        <option value="red">Red</option>
+        <option value="green">Green</option>
+        <option value="blue">Blue</option>
+    </select>
+    
+    <!-- onKeyUp -->
+    <input type="text" onkeyup="showLength(this. value)" placeholder="Type something">
+    <span id="charCount"></span>
+    
+    <p id="output"></p>
+    
+    <script>
+        function pageLoaded() {
+            document.getElementById("output").innerHTML = "Page loaded successfully!";
+        }
+        
+        function handleClick() {
+            alert("Button was clicked!");
+        }
+        
+        function changeColor(color) {
+            document. getElementById("pressBox").style.backgroundColor = color;
+        }
+        
+        function selectChanged(value) {
+            document.body.style.backgroundColor = value;
+        }
+        
+        function showLength(value) {
+            document.getElementById("charCount").innerHTML = " Length: " + value. length;
+        }
+    </script>
+</body>
+</html>

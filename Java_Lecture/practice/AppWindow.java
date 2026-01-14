@@ -38,7 +38,8 @@ public class AppWindow extends Frame {
 	         public void windowClosing(WindowEvent windowEvent){
 	            System.exit(0);
 	         }        
-	      });
+	      }
+		);
 		
 		
 	}

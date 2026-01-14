@@ -123,7 +123,7 @@ public class AWTNotepad extends Frame implements ActionListener, Runnable {
         while (running) {
         	status.setText("Running Thread in loop");
             try {
-                Thread.sleep(10000); // auto-save every 10 seconds
+                Thread.sleep(1000); // auto-save every 1 second
                 if (!fileName.equals("untitled.txt")) {
                     try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName))) {
                         bw.write(textArea.getText());

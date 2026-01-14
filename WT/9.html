@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <script>
+        function calculate(){
+            let m1=parseInt(document.getElementById("m1").value);
+            let m2=parseInt(document.getElementById("m2").value);
+            let m3=parseInt(document.getElementById("m3").value);
+            let m4=parseInt(document.getElementById("m4").value);
+            let m5=parseInt(document.getElementById("m5").value);
+            let sum=m1+m2+m3+m4+m5;
+            let p=sum/5;
+            document.write(p)
+        }
+    </script>
+    <body>
+        <form >
+            <label for="m1">Marks 1</label>
+            <input name="m1" id="m1" type="number">
+
+            <label for="m2">Marks 2</label>
+            <input name="m2" id="m2" type="number">
+
+            <label for="m3">Marks 3</label>
+            <input name="m3" id="m3" type="number">
+
+            <label for="m4">Marks 4</label>
+            <input name="m4" id="m4" type="number">
+
+            <label for="m5">Marks 5</label>
+            <input name="m5" id="m5" type="number">
+
+            <button type="submit" onclick="return calculate()">Calculate</button>
+        </form>
+    </body>
+</html>

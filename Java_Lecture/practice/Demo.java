@@ -1,13 +1,10 @@
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.BoxLayout;
-import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Insets;
-import java.awt.Dimension;
 
-//taking a class Demo
 public class Demo {
 
  // Main Method
@@ -15,30 +12,23 @@ public class Demo {
  {
 
      // Function to set up the window frame.
-     JFrame.setDefaultLookAndFeelDecorated(true);
-
+    //  JFrame.setDefaultLookAndFeelDecorated(false);
      // Creating Object of "JFrame" class
      JFrame frame = new JFrame("BoxLayout Example X_AXIS");
-
      // Declaration of objects of JButton class.
      JButton jbtn1, jbtn2, jbtn3, jbtn4, jbtn5;
-
      // Function to set the default
      // close operation of JFrame the.
      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
      // Set the panel to add buttons
      JPanel panel = new JPanel();
-
      // Creating Object of "boxlayout" in 
      // X_Axis from left to right
      BoxLayout boxlayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
-
      // to set the box layout
      panel.setLayout(boxlayout);
-
      // Set border for the panel
-     panel.setBorder(new EmptyBorder(new Insets(100, 150, 100, 150)));
+    //  panel.setBorder(new EmptyBorder(new Insets(100, 150, 100, 150)));
 
      // Initialization of object "jb1" of JButton class.
      jbtn1 = new JButton("Button 1");

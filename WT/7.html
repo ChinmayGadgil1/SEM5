@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>ROWSPAN and COLSPAN Examples</h2>
+
+<!-- Example 1: Basic COLSPAN -->
+<h3>1. COLSPAN Example (Merging columns horizontally)</h3>
+<table border="1" cellpadding="10">
+<tr>
+  <th>Name</th>
+  <th colspan="2">Contact Information</th>
+</tr>
+<tr>
+  <td>John Doe</td>
+  <td>john@email.com</td>
+  <td>123-456-7890</td>
+</tr>
+<tr>
+  <td>Jane Smith</td>
+  <td>jane@email.com</td>
+  <td>987-654-3210</td>
+</tr>
+</table>
+
+<!-- Example 2: Basic ROWSPAN -->
+<h3>2. ROWSPAN Example (Merging rows vertically)</h3>
+<table border="1" cellpadding="10">
+<tr>
+  <th>Department</th>
+  <th>Employee Name</th>
+</tr>
+<tr>
+  <td rowspan="3">IT Department</td>
+  <td>Alice Johnson</td>
+</tr>
+<tr>
+  <td>Bob Williams</td>
+</tr>
+<tr>
+  <td>Charlie Kirk</td>
+</tr>
+<tr>
+  <td rowspan="2">HR Department</td>
+  <td>David Miller</td>
+</tr>
+<tr>
+  <td>Eva Davis</td>
+</tr>
+</table>
+
+<!-- Example 3: Combined ROWSPAN and COLSPAN -->
+<h3>3. Combined ROWSPAN and COLSPAN</h3>
+<table border="1" cellpadding="10">
+<tr>
+  <th rowspan="2">ID</th>
+  <th rowspan="2">Name</th>
+  <th colspan="3">Marks</th>
+</tr>
+<tr>
+  <th>Subject 1</th>
+  <th>Subject 2</th>
+  <th>Subject 3</th>
+</tr>
+<tr>
+  <td>101</td>
+  <td>John</td>
+  <td>85</td>
+  <td>90</td>
+  <td>78</td>
+</tr>
+<tr>
+  <td>102</td>
+  <td>Sarah</td>
+  <td>92</td>
+  <td>88</td>
+  <td>95</td>
+</tr>
+</table>
+
+<!-- Example 4: Complex table layout -->
+<h3>4. Complex Table Layout</h3>
+<table border="1" cellpadding="10">
+<tr>
+  <td rowspan="2" colspan="2">A (rowspan=2, colspan=2)</td>
+  <td>B</td>
+  <td>C</td>
+</tr>
+<tr>
+  <td colspan="2">D (colspan=2)</td>
+</tr>
+<tr>
+  <td>E</td>
+  <td rowspan="2">F (rowspan=2)</td>
+  <td>G</td>
+  <td>H</td>
+</tr>
+<tr>
+  <td>I</td>
+  <td colspan="2">J (colspan=2)</td>
+</tr>
+</table>
+</body>
+</html>

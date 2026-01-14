@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Date and Time</title>
+</head>
+<body>
+    <h3>Current Date and Time</h3>
+    <div id="datetime"></div>
+    
+    <script>
+        var now = new Date();
+        
+        var days = ["Sunday", "Monday", "Tuesday", "Wednesday", 
+                    "Thursday", "Friday", "Saturday"];
+        var day = days[now.getDay()];
+        
+        var date = now.getDate();
+        var month = now.getMonth() + 1;
+        var year = now.getFullYear();
+        
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        
+        var dateTimeString = "Day:  " + day + "<br>" +
+                            "Date: " + date + "/" + month + "/" + year + "<br>" +
+                            "Time: " + hours + ":" + minutes + ":" + seconds;
+        
+        document.getElementById("datetime").innerHTML = dateTimeString;
+    </script>
+</body>
+</html>

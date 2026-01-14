@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Demo</title>
+</head>
+<body onload="loadFunction()">
+    
+    <h3 id="heading" onmousedown="changeToRed()" onmouseup="changeToGreen()">
+        Hover and click on this text
+    </h3>
+    
+    <p id="message"></p>
+    
+    <script>
+        function loadFunction() {
+            document.getElementById("message").innerHTML = 
+                "Page loaded successfully!";
+            document.getElementById("message").style.color = "blue";
+        }
+        
+        function changeToRed() {
+            document.getElementById("heading").style.color = "red";
+        }
+        
+        function changeToGreen() {
+            document. getElementById("heading").style.color = "green";
+        }
+    </script>
+    
+</body>
+</html>

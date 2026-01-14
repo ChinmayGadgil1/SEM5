@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+function changeColor() {
+    document.getElementById("demo").style.color = "red";
+    document.getElementById("demo").innerHTML = "Mouse is over!";
+}
+
+function revertColor() {
+    document.getElementById("demo").style.color = "black";
+    document.getElementById("demo").innerHTML = "Mouse over me!";
+}
+</script>
+
+<p id="demo" onmouseover="changeColor()" onmouseout="revertColor()">
+Mouse over me!
+</p>
+
+</body>
+</html>
